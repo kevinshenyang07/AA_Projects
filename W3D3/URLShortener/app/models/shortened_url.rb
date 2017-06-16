@@ -35,6 +35,15 @@ class ShortenedUrl < ApplicationRecord
          .select(:user_id).distinct.count
   end
 
+  has_many :taggings,
+    class_name: :Tagging,
+    primary_key: :id,
+    foreign_key: :short_url_id
+
+  has_many :tag_topics,
+    through: :taggings,
+    source: :topics
+
   belongs_to :submitter,
   class_name: :User,
   primary_key: :id,
