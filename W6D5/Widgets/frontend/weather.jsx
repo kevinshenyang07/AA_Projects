@@ -14,8 +14,10 @@ class Weather extends React.Component {
   requestCityAndTemp(pos) {
     let lat = (pos.coords.latitude);
     let lon = (pos.coords.longitude);
-    let url = `http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&APPID=8be90699a5a337225c62343041bbcf4c`;
-    let response = this.ajax(url);
+    let url = "http://api.openweathermap.org/data/2.5/weather?";
+    let queryStr = `lat=${lat}&lon=${lon}`;
+    let appId = `&APPID=8be90699a5a337225c62343041bbcf4c`;
+    let response = this.ajax(url + queryStr + appId);
   }
 
   ajax(url) {
@@ -24,10 +26,9 @@ class Weather extends React.Component {
     let that = this;
     request.onload = function() {
       if (request.status >= 200 && request.status < 400) {
-        // Success!
         var data = JSON.parse(request.responseText);
         let city = data['name'];
-        let weather = data['main']['temp'];
+        let weather = (data.main.temp - 273.15);
         that.setState({ city, weather });
       }
     };
@@ -35,14 +36,21 @@ class Weather extends React.Component {
   }
 
   render () {
+    let content;
+    if (this.state.city && this.state.weather) {
+      content = <div>
+        <p>{this.state.city}</p>
+        <p>{this.state.weather.toFixed(1)}</p>
+      </div>;
+    } else {
+      content = <div>Loading Weather...</div>;
+    }
     return (
       <div>
-        <p>
-          { this.state.city }
-        </p>
-        <p>
-          { this.state.weather }
-        </p>
+        <h1>Weather</h1>
+        <div className="weather">
+          {content}
+        </div>
       </div>
     );
   }
