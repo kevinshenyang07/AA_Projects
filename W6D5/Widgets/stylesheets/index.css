@@ -1,0 +1,14 @@
+#root {
+
+}
+
+.datetime {
+  font: sans-serif;
+  background-color: orange;
+  border: 1px solid black;
+  color: white;
+  width: 250px;
+  height: 50px;
+  align: center;
+  mergin: 20px 20px
+}
