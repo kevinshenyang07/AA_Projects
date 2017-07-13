@@ -3,7 +3,18 @@ import ReactDOM from 'react-dom';
 import Clock from './clock';
 import Weather from './weather';
 import AutoComplete from './autocomplete';
-// import Tabs from './tabs';
+import Tabs from './tabs';
+
+const Names = [
+  'Abba',
+  'Barney',
+  'Barbara',
+  'Jeff',
+  'Jenny',
+  'Sarah',
+  'Sally',
+  'Xander'
+];
 
 const Panes = [
   {title: 'one', content: 'I am the first'},
@@ -18,7 +29,8 @@ class Root extends React.Component {
         <Clock />
         <Weather />
         <div className="interactive">
-          <AutoComplete />
+          <Tabs panes={Panes} />
+          <AutoComplete names={Names} />
         </div>
       </div>
     );

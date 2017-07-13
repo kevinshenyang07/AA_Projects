@@ -3,41 +3,44 @@ import React from 'react';
 class AutoComplete extends React.Component {
   constructor(props) {
     super(props);
-    this.createResults = this.createResults.bind(this);
-    let results = this.createResults();
-    this.state = { inputVal: "", results };
+    this.state = { inputVal: "" };
     this.setInput = this.setInput.bind(this);
-    this.searchResults = this.searchResults.bind(this);
-  }
-
-  createResults() {
-    let words = ['ada', 'c++', 'python', 'scala'];
-    return words.map((word, i) => (
-      <li key={i} onClick={this.setInput}>{word}</li>
-    ));
+    this.selectName = this.selectName.bind(this);
   }
 
   setInput(event) {
-    let text = event.target.value;
+    let text = event.currentTarget.value;
     this.setState({ inputVal: text });
   }
 
-  searchResults(event) {
-    let text = event.target.value;
-    let filtered = this.state.results.filter(li => {
-      return text === li.props.children.slice(0, text.length);
+  matchSearch() {
+    if (!this.state.inputVal) { return this.props.names; }
+    const matches = this.props.names.filter(name => {
+      let input = this.state.inputVal.toLowerCase();
+      let candidate = name.slice(0, input.length).toLowerCase();
+      return input === candidate;
     });
-    this.setState({ inputVal: text, results: filtered});
+    window.matches = matches;
+    if (matches.length === 0) { return ['No matches.']; }
+    return matches;
+  }
+
+  selectName(event) {
+    let name = event.currentTarget.innerText;
+    this.setState({ inputVal: name });
   }
 
   render() {
+    const results = this.matchSearch().map((match, i) => (
+      <li key={i} onClick={this.selectName}>{match}</li>
+    ));
     return (
       <div>
         <h2>AutoComplete</h2>
         <div className="auto">
-          <input onChange={this.searchResults} value={this.state.inputVal} />
+          <input onChange={this.setInput} value={this.state.inputVal} />
           <ul>
-            {this.state.results}
+            {results}
           </ul>
         </div>
       </div>
