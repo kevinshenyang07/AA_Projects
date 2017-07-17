@@ -1,8 +1,12 @@
 ```js
 {
   session: {
-    id: 1,
-    username: "demo_user",
+    currentUser: {
+      id: 1,
+      firstname: "Chuck",
+      lastname: "Norris",
+      email: "chuck.norris@gmail.com"
+    },
     errors: ["User name can't be blank."]
   },
   
